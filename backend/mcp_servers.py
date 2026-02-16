@@ -17,16 +17,7 @@ def get_semgrep_server_params() -> Dict[str, Any]:
         "PYTHONUNBUFFERED": "1",  # Ensure output is not buffered
     }
 
-    return {
-        "command": "uvx",
-        "args": [
-            "--with",
-            "mcp==1.12.2",
-            "--quiet",
-            "semgrep-mcp==0.8.1",  # Last version before deprecation
-        ],
-        "env": env,
-    }
+    return {"command": "semgrep", "args": ["mcp"], "env": env}
 
 
 def create_semgrep_server() -> MCPServerStdio:

@@ -21,7 +21,7 @@ RUN pip install uv
 # Copy Python dependencies and install
 COPY backend/pyproject.toml backend/uv.lock* ./
 RUN uv sync --frozen
-
+RUN uv tool install semgrep
 # Copy backend source
 COPY backend/ ./
 
@@ -34,6 +34,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 
 # Expose port for Cloud Run / Azure Container Instances
 EXPOSE 8000
+
 
 # Start the FastAPI server
 CMD ["uv", "run", "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
