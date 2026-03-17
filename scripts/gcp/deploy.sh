@@ -28,9 +28,9 @@ fi
 
 # Use prod.tfvars for production environment
 if [ "$ENVIRONMENT" = "prod" ]; then
-  TF_APPLY_CMD=(terraform apply -var="openai_api_key=$OPENAI_API_KEY" -var="semgrep_app_token=$SEMGREP_APP_TOKEN" -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="project_id=$PROJECT_ID" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="project_id=$PROJECT_ID" -var="environment=$ENVIRONMENT" -auto-approve)
 else
-  TF_APPLY_CMD=(terraform apply -var="openai_api_key=$OPENAI_API_KEY" -var="semgrep_app_token=$SEMGREP_APP_TOKEN" -var="project_name=$PROJECT_NAME" -var="project_id=$PROJECT_ID" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(terraform apply -var="project_name=$PROJECT_NAME" -var="project_id=$PROJECT_ID" -var="environment=$ENVIRONMENT" -auto-approve)
 fi
 
 echo "🎯 Applying Terraform..."
