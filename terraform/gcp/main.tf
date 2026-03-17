@@ -162,7 +162,8 @@ resource "google_cloud_run_service" "app" {
 
   depends_on = [
     google_project_service.cloudrun,
-    docker_registry_image.app
+    docker_registry_image.app,
+    google_project_iam_member.compute_secret_accessor
   ]
 }
 
@@ -178,7 +179,7 @@ resource "google_cloud_run_service_iam_member" "public" {
 resource "google_project_iam_member" "compute_secret_accessor" {
   project = var.project_id
   role    = "roles/secretmanager.secretAccessor"
-  member  = "serviceAccount:${google_cloud_run_service.app.template[0].spec[0].service_account_name == "" ? "472950868910-compute@developer.gserviceaccount.com" : google_cloud_run_service.app.template[0].spec[0].service_account_name}"
+  member  = "serviceAccount:472950868910-compute@developer.gserviceaccount.com"
 }
 
 # Outputs
