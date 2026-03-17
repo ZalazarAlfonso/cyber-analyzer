@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "cyber-analyzer-tfstate"
-    prefix = "terraform/state"
+    # We leave these empty because we are passing 
+    # them via -backend-config in the shell script
   }
 }

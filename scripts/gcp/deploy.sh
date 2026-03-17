@@ -18,7 +18,8 @@ GCP_REGION=${DEFAULT_GCP_REGION:-eu-southwest1}
 PROJECT_ID=${GCP_PROJECT_ID}
 
 terraform init -input=false \
-  -backend-config="key=${ENVIRONMENT}/terraform.tfstate" \
+  -backend-config="bucket=cyber-analyzer-tfstate" \
+  -backend-config="prefix=${ENVIRONMENT}" \
   -backend-config="region=${GCP_REGION}"
 
 if ! terraform workspace list | grep -q "$ENVIRONMENT"; then
