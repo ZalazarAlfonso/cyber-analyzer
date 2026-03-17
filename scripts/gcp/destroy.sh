@@ -25,9 +25,8 @@ GCP_REGION=${DEFAULT_GCP_REGION:-europe-southwest1}
 # Initialize terraform
 echo "🔧 Initializing Terraform..."
 terraform init -input=false \
-  -backend-config="key=${ENVIRONMENT}/terraform.tfstate" \
-  -backend-config="region=${GCP_REGION}" \
-  -backend-config="encrypt=true"
+  -backend-config="bucket=cyber-analyzer-tfstate" \
+  -backend-config="prefix=${ENVIRONMENT}"
 
 # Check if workspace exists
 if ! terraform workspace list | grep -q "$ENVIRONMENT"; then
