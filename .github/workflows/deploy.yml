@@ -60,7 +60,7 @@ jobs:
       - name: Run Deployment Script
         run: |
           # Set environment variables for the script
-          export GCP_ACCOUNT_ID=${{ secrets.GCP_ACCOUNT_ID }}
+          export GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
           export DEFAULT_GCP_REGION=${{ secrets.DEFAULT_GCP_REGION }}
           
           # Make script executable and run it
