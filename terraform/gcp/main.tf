@@ -93,6 +93,19 @@ resource "docker_registry_image" "app" {
   ]
 }
 
+# Permission for accessing the secrets
+resource "google_secret_manager_secret_iam_member" "secret_access" {
+  secret_id = "OPENAI_API_KEY"
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_cloud_run_service.app.template[0].spec[0].service_account_name == "" ? "472950868910-compute@developer.gserviceaccount.com" : google_cloud_run_service.app.template[0].spec[0].service_account_name}"
+}
+
+resource "google_secret_manager_secret_iam_member" "secret_access" {
+  secret_id = "SEMGREP_APP_TOKEN"
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_cloud_run_service.app.template[0].spec[0].service_account_name == "" ? "472950868910-compute@developer.gserviceaccount.com" : google_cloud_run_service.app.template[0].spec[0].service_account_name}"
+}
+
 # Deploy to Cloud Run
 resource "google_cloud_run_service" "app" {
   name     = var.service_name
@@ -111,13 +124,23 @@ resource "google_cloud_run_service" "app" {
         }
 
         env {
-          name  = "OPENAI_API_KEY"
-          value = var.openai_api_key
+          name = "OPENAI_API_KEY"
+          value_from {
+            secret_key_ref {
+              name = "OPENAI_API_KEY"
+              key  = "latest" # Always uses the latest version
+            }
+          }
         }
 
         env {
-          name  = "SEMGREP_APP_TOKEN"
-          value = var.semgrep_app_token
+          name = "SEMGREP_APP_TOKEN"
+          value_from {
+            secret_key_ref {
+              name = "SEMGREP_APP_TOKEN"
+              key  = "latest" # Always uses the latest version
+            }
+          }
         }
 
         env {

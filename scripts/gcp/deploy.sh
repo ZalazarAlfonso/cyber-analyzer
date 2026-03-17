@@ -4,18 +4,17 @@ set -e
 ENVIRONMENT=${1:-dev}          # dev | test | prod
 PROJECT_NAME=${2:-cyber-analyzer}
 export $(cat .env | xargs)
+GCP_ACCOUNT_ID=$(gcloud auth list --format="value(account)")
+GCP_REGION=${DEFAULT_GCP_REGION:-eu-southwest1}
+PROJECT_ID=${GCP_PROJECT_ID}
 
 echo "🚀 Deploying ${PROJECT_NAME} to ${ENVIRONMENT}..."
-echo "Project ID: $TF_VAR_project_id"
-echo "OpenAI key loaded: ${OPENAI_API_KEY:0:8}..."
-echo "Semgrep token loaded: ${SEMGREP_APP_TOKEN:0:8}..."
+echo "Project ID: ${PROJECT_ID}"
 
 # 1. Terraform workspace & apply
 cd terraform
 cd gcp
-GCP_ACCOUNT_ID=$(gcloud auth list --format="value(account)")
-GCP_REGION=${DEFAULT_GCP_REGION:-eu-southwest1}
-PROJECT_ID=${GCP_PROJECT_ID}
+
 
 terraform init -input=false \
   -backend-config="bucket=cyber-analyzer-tfstate" \
