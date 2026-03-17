@@ -3,10 +3,19 @@ variable "project_id" {
   type        = string
 }
 
+variable "environment" {
+  description = "Environment name (dev, test, prod)"
+  type        = string
+  validation {
+    condition     = contains(["dev", "test", "prod"], var.environment)
+    error_message = "Environment must be one of: dev, test, prod."
+  }
+}
+
 variable "region" {
   description = "GCP region for Cloud Run deployment"
   type        = string
-  default     = "us-central1"
+  default     = "eu-southwest1"
 }
 
 variable "service_name" {
