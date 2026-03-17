@@ -3,6 +3,11 @@ variable "project_id" {
   type        = string
 }
 
+variable "project_name" {
+  description = "GCP Project name"
+  type        = string
+}
+
 variable "environment" {
   description = "Environment name (dev, test, prod)"
   type        = string
@@ -15,7 +20,7 @@ variable "environment" {
 variable "region" {
   description = "GCP region for Cloud Run deployment"
   type        = string
-  default     = "eu-southwest1"
+  default     = "europe-southwest1"
 }
 
 variable "service_name" {

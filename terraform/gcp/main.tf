@@ -13,6 +13,17 @@ terraform {
   }
 }
 
+locals {
+
+  name_prefix = "${var.project_name}-${var.environment}"
+
+  common_tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    ManagedBy   = "terraform"
+  }
+}
+
 # Configure Google Provider
 provider "google" {
   project = var.project_id
@@ -75,7 +86,7 @@ resource "docker_image" "app" {
 # Push Docker image to Artifact Registry
 resource "docker_registry_image" "app" {
   name = docker_image.app.name
-  
+
   depends_on = [
     google_artifact_registry_repository.app,
     docker_image.app
