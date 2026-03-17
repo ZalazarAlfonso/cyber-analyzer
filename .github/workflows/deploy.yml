@@ -58,20 +58,24 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Run Deployment Script
+        id: deploy_step # Added an ID here to capture outputs later
         run: |
-          # Set environment variables for the script
           export GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
           export DEFAULT_GCP_REGION=${{ secrets.DEFAULT_GCP_REGION }}
           
-          # Make script executable and run it
           chmod +x scripts/gcp/deploy.sh
+          # Run the script. It now handles the 'init' with the correct prefix.
           ./scripts/gcp/deploy.sh ${{ github.event.inputs.environment || 'dev' }}
           
       - name: Get Deployment URLs
         id: deploy_outputs
-        working-directory: ./terraform
+        # Change: Move into the directory where the state was initialized
+        working-directory: ./terraform/gcp
         run: |
-          terraform workspace select ${{ github.event.inputs.environment || 'dev' }}
+          terraform init -input=false \
+            -backend-config="bucket=cyber-analyzer-tfstate" \
+            -backend-config="prefix=${{ github.event.inputs.environment || 'dev' }}"
+
           echo "service_url=$(terraform output -raw service_url)" >> $GITHUB_OUTPUT
 
       - name: Deployment Summary

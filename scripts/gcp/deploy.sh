@@ -42,6 +42,3 @@ CUSTOM_URL=$(terraform output -raw service_url 2>/dev/null || true)
 # 2. Final messages
 echo -e "\n✅ Deployment complete!"
 echo "🌐 Service URL : $(terraform -chdir=terraform output -raw service_url)"
-if [ -n "$CUSTOM_URL" ]; then
-  echo "🔗 Custom domain  : $CUSTOM_URL"
-fi
