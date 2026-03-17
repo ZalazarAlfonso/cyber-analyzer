@@ -95,7 +95,7 @@ resource "docker_registry_image" "app" {
 
 # Deploy to Cloud Run
 resource "google_cloud_run_service" "app" {
-  name     = var.service_name
+  name     = local.name_prefix
   location = var.region
 
   template {
