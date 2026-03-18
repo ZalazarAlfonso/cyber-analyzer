@@ -61,9 +61,9 @@ data "google_client_config" "default" {}
 # Create Artifact Registry repository
 resource "google_artifact_registry_repository" "app" {
   location      = var.region
-  repository_id = var.service_name
+  repository_id = local.name_prefix
   format        = "DOCKER"
-  description   = "Docker repository for ${var.service_name}"
+  description   = "Docker repository for ${local.name_prefix}"
 }
 
 # Build Docker image
