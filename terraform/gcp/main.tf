@@ -68,7 +68,7 @@ resource "google_artifact_registry_repository" "app" {
 
 # Build Docker image
 resource "docker_image" "app" {
-  name = "${var.region}-docker.pkg.dev/${var.project_id}/${var.service_name}/${var.service_name}:${var.docker_image_tag}"
+  name = "${var.region}-docker.pkg.dev/${var.project_id}/${local.name_prefix}/${local.name_prefix}:${var.docker_image_tag}"
 
   build {
     context    = "${path.module}/../.."
