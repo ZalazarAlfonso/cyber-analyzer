@@ -23,12 +23,6 @@ variable "region" {
   default     = "europe-southwest1"
 }
 
-variable "service_name" {
-  description = "Name of the Cloud Run service"
-  type        = string
-  default     = "cyber-analyzer"
-}
-
 variable "docker_image_tag" {
   description = "Tag for the Docker image"
   type        = string

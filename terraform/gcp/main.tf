@@ -58,6 +58,11 @@ provider "docker" {
 # Get current project configuration
 data "google_client_config" "default" {}
 
+# Get project id
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
 # Create Artifact Registry repository
 resource "google_artifact_registry_repository" "app" {
   location      = var.region
@@ -101,7 +106,7 @@ resource "google_cloud_run_service" "app" {
   template {
     spec {
       containers {
-        image = docker_image.app.name
+        image = docker_registry_image.app.name
 
         resources {
           limits = {
@@ -179,7 +184,7 @@ resource "google_cloud_run_service_iam_member" "public" {
 resource "google_project_iam_member" "compute_secret_accessor" {
   project = var.project_id
   role    = "roles/secretmanager.secretAccessor"
-  member  = "serviceAccount:472950868910-compute@developer.gserviceaccount.com"
+  member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 }
 
 # Outputs
